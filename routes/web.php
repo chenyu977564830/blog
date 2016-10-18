@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 Route::any('admin/login', 'Admin\LoginController@login');
 Route::get('admin/code', 'Admin\LoginController@code');
+Route::get('admin/encrypt', 'Admin\LoginController@encrypt');
 
 Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.login'], function () {
     Route::get('index', 'IndexController@index');
