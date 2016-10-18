@@ -22,4 +22,5 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.logi
 	Route::get('info', 'IndexController@info');
 	Route::get('quit', 'LoginController@quit');
 	Route::any('pass', 'IndexController@pass');
+	Route::resource('category', 'CategoryController');
 });
