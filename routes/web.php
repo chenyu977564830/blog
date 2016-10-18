@@ -17,3 +17,9 @@ Route::get('/', function () {
 Route::any('admin/login', 'Admin\LoginController@login');
 Route::get('admin/code', 'Admin\LoginController@code');
 
+Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.login'], function () {
+    Route::get('index', 'IndexController@index');
+	Route::get('info', 'IndexController@info');
+	Route::get('quit', 'LoginController@quit');
+	Route::any('pass', 'IndexController@pass');
+});

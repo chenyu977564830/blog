@@ -11,7 +11,9 @@ class LoginController extends CommonController
     public function login()
     {
         //判断是否为post表单提交
-    	if(!$input=Input::all())return view('admin.login');
+    	if(!$input=Input::all()){
+            return view('admin.login');
+        }
 		//检查验证码
         if(strtoupper($input['code'])!=$_SESSION['code'])return back()->with('msg','验证码错误');//back函数将返回的变量存入了session中
 
@@ -20,12 +22,18 @@ class LoginController extends CommonController
         $user_pass=Crypt::decrypt($user->user_pass);
         if($user_pass!=$input['user_pass'])return back()->with('msg','密码错误');
 
-        echo 'ok';
+        session(['user'=>$user]);
+        return redirect('admin/index');
     }
 
     public function code(){
     	$code=new \Code();
     	$code->make();
+    }
+
+    public function quit(){
+        session(['user'=>null]);
+        return redirect('admin/login');
     }
  
 }
