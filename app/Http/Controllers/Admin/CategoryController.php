@@ -7,7 +7,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Model\Category;
-
+require_once('resources/org/UnlimitedForLevel.class.php');
 class CategoryController extends CommonController
 {
     /**
@@ -17,7 +17,11 @@ class CategoryController extends CommonController
      */
     public function index()
     {
-        return view('admin.listCate');
+
+        $cates=Category::orderBy('cate_order','asc')->get();
+        $cates=\unlimitedLevel::unlimitedForLevel($cates);
+
+        return view('admin.listCate',compact('cates'));
     }
 
     /**
@@ -27,7 +31,9 @@ class CategoryController extends CommonController
      */
     public function create()
     {
-        return view('admin.addCate');
+        $cates=Category::orderBy('cate_order','asc')->get();
+        $cates=\unlimitedLevel::unlimitedForLevel($cates);
+        return view('admin.addCate',compact('cates'));
     }
 
     /**
@@ -53,8 +59,15 @@ class CategoryController extends CommonController
 
         $validator=Validator::make($input,$rules,$message);
         if($validator->passes()){
-            Category::create(Input::all());
-            return back()->with('msg','添加分类成功');
+            if($input['cate_id']){//更新
+                $data=Input::except('_token','cate_id');
+                Category::where('cate_id',$input['cate_id'])->update($data);
+                $msg='修改分类成功';
+            }else{
+                Category::create(Input::all());
+                $msg='添加分类成功';
+            }
+            return back()->with('msg',$msg);
         }else{
             return back()->withErrors($validator);
         }
@@ -68,7 +81,7 @@ class CategoryController extends CommonController
      */
     public function show($id)
     {
-        //
+        //   
     }
 
     /**
@@ -79,7 +92,10 @@ class CategoryController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $cates=Category::orderBy('cate_order','asc')->get();
+        $cates=\unlimitedLevel::unlimitedForLevel($cates);
+        $cateEdit=Category::find($id);
+        return view('admin.addCate',compact('cateEdit','cates'));
     }
 
     /**
@@ -102,6 +118,52 @@ class CategoryController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        
+        $cateChild=Category::where('cate_pid',$id)->get();
+        if(count($cateChild)>0){
+            $data=[
+                'status'=>1,
+                'msg'=>'存在子分类，删除失败'
+            ];
+        }else{
+            $cate=Category::find($id);
+            $re=$cate->delete();
+            if($re){
+                $data=[
+                    'status'=>0,
+                    'msg'=>'排序成功'
+                ];
+            }else{
+                $data=[
+                    'status'=>1,
+                    'msg'=>'排序失败'
+                ];
+            }
+
+        }
+        return $data;
+
+
+    }
+    
+    public function order()
+    {
+        $input=Input::all();
+        $cate=Category::find($input['cate_id']);
+        $cate->cate_order=$input['cate_order'];
+        $re=$cate->update();
+        if($re){
+            $data=[
+                'status'=>0,
+                'msg'=>'排序成功'
+            ];
+        }else{
+            $data=[
+                'status'=>1,
+                'msg'=>'排序失败'
+            ];
+        }
+
+        return $data;
     }
 }
