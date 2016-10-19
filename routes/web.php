@@ -25,4 +25,5 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.logi
 	Route::any('pass', 'IndexController@pass');
 	Route::post('order', 'CategoryController@order');
 	Route::resource('category', 'CategoryController');
+	Route::resource('article', 'ArticleController');
 });

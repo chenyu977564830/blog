@@ -3,7 +3,7 @@
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-        <i class="fa fa-home"></i> <a href="#">首页</a> &raquo; <a href="#">商品管理</a> &raquo; 添加商品
+        <i class="fa fa-home"></i> <a href="#">首页</a>  &raquo; 文章列表
     </div>
     <!--面包屑导航 结束-->
 
@@ -21,7 +21,7 @@
                         </select>
                     </td>
                     <th width="70">关键字:</th>
-                    <td><input type="text" name="keywords" placeholder="关键字"></td>
+                    <td><input type="text" name="keywords" placeholder="文章标题"></td>
                     <td><input type="submit" name="sub" value="查询"></td>
                 </tr>
             </table>
@@ -51,11 +51,14 @@
                         <th class="tc">排序</th>
                         <th class="tc">ID</th>
                         <th>标题</th>
-                        <th>审核状态</th>
-                        <th>点击</th>
+                        <th>文章分类</th>
+                        <th>缩略图</th>
+                        <th>关键词</th>
+                        <th>开放</th>
+                        <th>推荐</th>
+                        <th>点击量</th>
                         <th>发布人</th>
                         <th>更新时间</th>
-                        <th>评论</th>
                         <th>操作</th>
                     </tr>
                     <tr>
@@ -137,7 +140,7 @@
 
 
 
-                <div class="page_list">
+                <div class="page_list" style="display:none;">
                     <ul>
                         <li class="disabled"><a href="#">&laquo;</a></li>
                         <li class="active"><a href="#">1</a></li>
