@@ -3,25 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+ 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Model\Category;
-require_once('resources/org/UnlimitedForLevel.class.php');
-class CategoryController extends CommonController
+use App\Http\Model\Link;
+
+class LinkController extends CommonController
 {
     /**
+     *  
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-
-        $cates=Category::orderBy('cate_order','asc')->get();
-        $cates=\unlimitedLevel::unlimitedForLevel($cates);
-
-        return view('admin.listCate',compact('cates'));
+        $links=Link::orderBy('link_order','asc')->get();
+        return view('admin.listLink',compact('links'));
     }
 
     /**
@@ -31,9 +30,7 @@ class CategoryController extends CommonController
      */
     public function create()
     {
-        $cates=Category::orderBy('cate_order','asc')->get();
-        $cates=\unlimitedLevel::unlimitedForLevel($cates);
-        return view('admin.addCate',compact('cates'));
+        return view('admin.addLink');
     }
 
     /**
@@ -46,28 +43,28 @@ class CategoryController extends CommonController
     {
         $input=$request->input();
         $rules=[
-            'cate_pid'=>'required',
-            'cate_name'=>'required|between:1,20',
-            'cate_order'=>'required'
+            'link_url'=>'required',
+            'link_name'=>'required|between:2,20',
+            'link_order'=>'required'
         ];
         $message=[
-            'cate_pid.required'=>'父级id不能为空',
-            'cate_name.required'=>'分类名称不能为空',
-            'cate_name.between'=>'分类名称在1-20字之间',
-            'cate_order.required'=>'排序不能为空'
+            'link_url.required'=>'链接地址不能为空',
+            'link_name.required'=>'链接名称不能为空',
+            'link_name.between'=>'链接名称在2-20字之间',
+            'link_order.required'=>'排序不能为空'
         ];
 
         $validator=Validator::make($input,$rules,$message);
         if($validator->passes()){
-            if(isset($input['cate_id'])&&$input['cate_id']!=''){//更新
-                $data=Input::except('_token','cate_id');
-                Category::where('cate_id',$input['cate_id'])->update($data);
+            if(isset($input['link_id'])&&$input['link_id']!=''){//更新
+                $data=Input::except('_token','link_id');
+                Link::where('link_id',$input['link_id'])->update($data);
                 $msg='修改分类成功';
             }else{
-                Category::create(Input::all());
+                Link::create(Input::all());
                 $msg='添加分类成功';
             }
-            return back()->with('msg',$msg);
+            return redirect('admin/link')->with('msg',$msg);
         }else{
             return back()->withErrors($validator);
         }
@@ -81,7 +78,7 @@ class CategoryController extends CommonController
      */
     public function show($id)
     {
-        //   
+        //
     }
 
     /**
@@ -92,10 +89,9 @@ class CategoryController extends CommonController
      */
     public function edit($id)
     {
-        $cates=Category::orderBy('cate_order','asc')->get();
-        $cates=\unlimitedLevel::unlimitedForLevel($cates);
-        $cateEdit=Category::find($id);
-        return view('admin.addCate',compact('cateEdit','cates'));
+        $links=Link::orderBy('link_order','asc')->get();
+        $linkEdit=Link::find($id);
+        return view('admin.addLink',compact('linkEdit','links'));
     }
 
     /**
@@ -118,16 +114,8 @@ class CategoryController extends CommonController
      */
     public function destroy($id)
     {
-        
-        $cateChild=Category::where('cate_pid',$id)->get();
-        if(count($cateChild)>0){
-            $data=[
-                'status'=>1,
-                'msg'=>'存在子分类，删除失败'
-            ];
-        }else{
-            $cate=Category::find($id);
-            $re=$cate->delete();
+        $link=Link::find($id);
+            $re=$link->delete();
             if($re){
                 $data=[
                     'status'=>0,
@@ -139,19 +127,15 @@ class CategoryController extends CommonController
                     'msg'=>'删除失败'
                 ];
             }
-
-        }
         return $data;
-
-
     }
-    
-    public function order()
+
+     public function order()
     {
         $input=Input::all();
-        $cate=Category::find($input['cate_id']);
-        $cate->cate_order=$input['cate_order'];
-        $re=$cate->update();
+        $link=Link::find($input['link_id']);
+        $link->link_order=$input['link_order'];
+        $re=$link->update();
         if($re){
             $data=[
                 'status'=>0,

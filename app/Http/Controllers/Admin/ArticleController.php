@@ -97,7 +97,7 @@ class ArticleController extends CommonController
 
         $validator=Validator::make($input,$rules,$message);
         if($validator->passes()){
-            if(isset($input['art_id'])){//更新
+            if(isset($input['art_id'])&&$input['art_id']!=''){//更新
                 $data=Input::except('_token','art_id');
                 Article::where('art_id',$input['art_id'])->update($data);
                 $msg='修改文章成功';
@@ -130,7 +130,10 @@ class ArticleController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $cates=Category::orderBy('cate_order','asc')->get();
+        $cates=\unlimitedLevel::unlimitedForLevel($cates);
+        $article=Article::find($id);
+        return view('admin.addArticle',compact('cates','article'));
     }
 
     /**

@@ -44,7 +44,7 @@
                             <select name="cate_id">
                                 <option value="">==请选择==</option>
                                 @foreach($cates as $cate)
-                                <option value="{{$cate->cate_id}}">{{$cate->html}}{{$cate->cate_name}}</option>
+                                <option value="{{$cate->cate_id}}" @if(isset($article)&&$article->cate_id==$cate->cate_id) selected="selected" @endif>{{$cate->html}}{{$cate->cate_name}}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -52,55 +52,55 @@
                     <tr>
                         <th><i class="require">*</i>文章标题：</th>
                         <td>
-                            <input type="text" class="lg" name="art_title">
+                            <input type="text" class="lg" name="art_title" value="@if(isset($article)) {{$article->art_title}} @endif" >
                             <span><i class="fa fa-exclamation-circle yellow"></i>5-20字</span>
                         </td>
                     </tr>
                     <tr>
                         <th>发布人：</th>
                         <td>
-                            <input type="text" name="art_editor">
+                            <input type="text" name="art_editor" value="@if(isset($article)) {{$article->art_editor}} @endif" >
                             <span><i class="fa fa-exclamation-circle yellow"></i>15字以内</span>
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>点击量：</th>
                         <td>
-                            <input type="text" class="sm" name="art_view" value="100" disabled="disabled" >
+                            <input type="text" class="sm" name="art_view" value="@if(isset($article)) {{$article->art_view}}@else 100 @endif" disabled="disabled" >
                         </td>
                     </tr>
                     <tr>
                         <th>缩略图：</th>
                         <td>
-                            <label style="float:left;"><input type="hidden" class="lg" name="art_thumb"></label>
+                            <label style="float:left;"><input type="hidden" class="lg" value="@if(isset($article)) {{$article->art_thumb}} @endif"  name="art_thumb"></label>
                             <label style="float:left;"><input id="file_upload" name="file_upload" type="file" multiple="true"></label>
-                            <img src="" id='art_thumb_img' style="max-width: 350px;max-height: 100px;" >
+                            <img src="@if(isset($article)) {{$article->art_thumb}} @endif" id='art_thumb_img' style="max-width: 350px;max-height: 100px;" >
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>开放：</th>
                         <td>
                             <label for=""><input type="radio" name="art_open" value="1" checked="checked" >是</label>
-                            <label for=""><input type="radio" name="art_open" value="0" >否</label>
+                            <label for=""><input type="radio" name="art_open" @if(isset($article) &&$article->art_open==0 ) checked="checked" @endif value="0" >否</label>
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>关键词：</th>
                         <td>
-                            <input type="text" class="sm" name="art_tag" >
+                            <input type="text" class="sm" name="art_tag" value="@if(isset($article)) {{$article->art_tag}} @endif" >
                              <span><i class="fa fa-exclamation-circle yellow"></i>逗号分割</span>
                         </td>
                     </tr>
                     <tr>
                         <th>描述：</th>
                         <td>
-                            <textarea name="art_discription"></textarea>
+                            <textarea name="art_discription">@if(isset($article)) {{$article->art_discription}} @endif</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th><i class="require">*</i>详细内容：</th>
                         <td>
-                            <textarea class="lg" id="editor" name="art_content" style="width:860px;height:500px;" ></textarea>
+                            <textarea class="lg" id="editor" name="art_content" style="width:860px;height:500px;" >@if(isset($article)) {{$article->art_content}} @endif</textarea>
                         </td>
                     </tr>
                     <tr>

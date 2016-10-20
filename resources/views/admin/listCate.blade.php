@@ -35,7 +35,7 @@
             <!--快捷导航 开始-->
             <div class="result_content">
                 <div class="short_wrap">
-                    <a href="{{url('admin/article/create')}}"><i class="fa fa-plus"></i>新增文章</a>
+                    <a href="{{url('admin/category/create')}}"><i class="fa fa-plus"></i>新增分类</a>
                     <a href="{{url('admin/category')}}"><i class="fa fa-refresh"></i>更新排序</a>
                 </div>
             </div>
@@ -80,7 +80,7 @@
     <script>
         function changeOrder(obj,cate_id){
             cate_order=$(obj).val();
-            $.post("{{url('admin/order')}}",{'_token':'{{csrf_token()}}','cate_order':cate_order,'cate_id':cate_id},function(data){
+            $.post("{{url('admin/category/order')}}",{'_token':'{{csrf_token()}}','cate_order':cate_order,'cate_id':cate_id},function(data){
                 if(data['status']==0){
                     layer.msg(data['msg'],{icon:6});
                 }else{

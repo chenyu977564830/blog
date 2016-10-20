@@ -42,3 +42,5 @@ controller 中引入数据库操作类 use Illuminate\Support\Facades\DB;
 $('input[name="test"]:checked').each(function(){ 
 chk_value.push($(this).val()); 
 }); 
+14.数据库迁移 ： php artisan make:migrate create_links_table   填充字段 然后用php artisan migrate 完成创建
+15运用seeder进行数据填充 php artisan make:seeder LinksTableSeeder 填充数据  php artisan db:seed
