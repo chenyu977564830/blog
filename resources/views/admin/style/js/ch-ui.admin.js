@@ -38,7 +38,7 @@ $(function(){
 
 //列表页点击全选按钮
 $(function(){
-	$('.list_tab').find('tr').find('[type=checkbox]').click(function(){
+	$('#checked').click(function(){
 		$('.list_tab').find('td').find('[type=checkbox]').prop('checked',$(this).prop('checked'));
 	});
 })

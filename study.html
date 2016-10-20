@@ -38,3 +38,7 @@ controller 中引入数据库操作类 use Illuminate\Support\Facades\DB;
 10.表单提交 ：laravel 开启的csrf 跨站访问保护  在表单提交中需要加入{{csrf_field()}}才能使得验证通过
 11.在使用ajax做post提交的时候需要加入数据{{'_token':'{csrf_token()}}'}
 12.在使用RESTful 资源控制器的时候 PUT/PATCH	/photos/{photo}	update	photos.update 这个方法需要在表单中加入<input type='hidden' name='_method' value='put' >
+13.jquery 获取复选框的值
+$('input[name="test"]:checked').each(function(){ 
+chk_value.push($(this).val()); 
+}); 

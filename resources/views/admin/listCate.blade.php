@@ -96,6 +96,7 @@
                 }, function(){
                   $.post("{{url('admin/category')}}"+"/"+cate_id,{'_token':'{{csrf_token()}}','_method':'delete'},function(data){
                         if(data['status']==0){
+                            window.location.reload();
                             layer.msg(data['msg'],{icon:6});
                         }else{
                             layer.msg(data['msg'],{icon:5});

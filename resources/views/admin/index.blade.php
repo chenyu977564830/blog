@@ -60,7 +60,7 @@
 	<!--主体部分 结束-->
 
 	<!--底部 开始-->
-	<div class="bottom_box" style="padding-left:370px" >
+	<div class="bottom_box" style="text-align: center;" >
 		CopyRight © 2015. Powered By <a href="http://cchenhuiyu.com">http://cchenhuiyu.com</a>.
 	</div>
 	<!--底部 结束-->

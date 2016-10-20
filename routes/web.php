@@ -24,6 +24,9 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.logi
 	Route::get('quit', 'LoginController@quit');
 	Route::any('pass', 'IndexController@pass');
 	Route::post('order', 'CategoryController@order');
+	Route::post('upload', 'CommonController@upload');
+	Route::get('cate/{cate_id}/{keywords}', 'ArticleController@index');
+	Route::post('article/delMuch', 'ArticleController@delMuch');
 	Route::resource('category', 'CategoryController');
 	Route::resource('article', 'ArticleController');
 });

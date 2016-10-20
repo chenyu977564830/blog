@@ -45,7 +45,7 @@ class CategoryController extends CommonController
     public function store(Request $request)
     {
         $input=$request->input();
-         $rules=[
+        $rules=[
             'cate_pid'=>'required',
             'cate_name'=>'required|between:1,20',
             'cate_order'=>'required'
@@ -59,7 +59,7 @@ class CategoryController extends CommonController
 
         $validator=Validator::make($input,$rules,$message);
         if($validator->passes()){
-            if($input['cate_id']){//更新
+            if(isset($input['cate_id'])){//更新
                 $data=Input::except('_token','cate_id');
                 Category::where('cate_id',$input['cate_id'])->update($data);
                 $msg='修改分类成功';
@@ -131,12 +131,12 @@ class CategoryController extends CommonController
             if($re){
                 $data=[
                     'status'=>0,
-                    'msg'=>'排序成功'
+                    'msg'=>'删除成功'
                 ];
             }else{
                 $data=[
                     'status'=>1,
-                    'msg'=>'排序失败'
+                    'msg'=>'删除失败'
                 ];
             }
 

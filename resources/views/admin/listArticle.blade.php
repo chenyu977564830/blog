@@ -3,26 +3,37 @@
     <!--面包屑导航 开始-->
     <div class="crumb_warp">
         <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-        <i class="fa fa-home"></i> <a href="#">首页</a>  &raquo; 文章列表
+        <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a>  &raquo; 文章列表
     </div>
     <!--面包屑导航 结束-->
 
 	<!--结果页快捷搜索框 开始-->
 	<div class="search_wrap">
-        <form action="" method="post">
+        <form action="{{url('admin/article/search')}}" method="post">
             <table class="search_tab">
                 <tr>
                     <th width="120">选择分类:</th>
                     <td>
-                        <select onchange="javascript:location.href=this.value;">
+                        <select id="cate">
                             <option value="">全部</option>
-                            <option value="http://www.baidu.com">百度</option>
-                            <option value="http://www.sina.com">新浪</option>
+                            @foreach($cates as $cate)
+                            <option value="{{$cate->cate_id}}" @if($cate_id==$cate->cate_id) selected="selected" @endif >{{$cate->html}}{{$cate->cate_name}}</option>
+                            @endforeach
                         </select>
+                        <script>
+                            $('#cate').change(function(){
+                                window.location.href="{{url('admin/cate')}}"+'/'+$(this).val()+'/null';
+                            });
+                        </script>
                     </td>
                     <th width="70">关键字:</th>
-                    <td><input type="text" name="keywords" placeholder="文章标题"></td>
-                    <td><input type="submit" name="sub" value="查询"></td>
+                    <td><input type="text" id="keywords" placeholder="文章标题"></td>
+                    <td><input type="button" id="sub" value="查询"></td>
+                    <script>
+                        $('#sub').click(function(){
+                            window.location.href="{{url('admin/cate')}}"+'/'+$("#cate option:selected").val()+'/'+$("#keywords").val();
+                        });
+                    </script>
                 </tr>
             </table>
         </form>
@@ -35,9 +46,8 @@
             <!--快捷导航 开始-->
             <div class="result_content">
                 <div class="short_wrap">
-                    <a href="#"><i class="fa fa-plus"></i>新增文章</a>
-                    <a href="#"><i class="fa fa-recycle"></i>批量删除</a>
-                    <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
+                    <a href="{{url('admin/article/create')}}"><i class="fa fa-plus"></i>新增文章</a>
+                    <a href="javascript:void(0);" id='delMuch'  ><i class="fa fa-recycle"></i>批量删除</a>
                 </div>
             </div>
             <!--快捷导航 结束-->
@@ -46,113 +56,93 @@
         <div class="result_wrap">
             <div class="result_content">
                 <table class="list_tab">
+                    
                     <tr>
-                        <th class="tc" width="5%"><input type="checkbox" name=""></th>
-                        <th class="tc">排序</th>
+                        <th class="tc" width="5%"><input type="checkbox" id="checked"></th>
                         <th class="tc">ID</th>
                         <th>标题</th>
                         <th>文章分类</th>
                         <th>缩略图</th>
                         <th>关键词</th>
-                        <th>开放</th>
-                        <th>推荐</th>
+                        <th class="tc" >开放</th>
+                        <th class="tc" >推荐</th>
                         <th>点击量</th>
                         <th>发布人</th>
                         <th>更新时间</th>
                         <th>操作</th>
                     </tr>
+                    @foreach($articleList as $v)
                     <tr>
-                        <td class="tc"><input type="checkbox" name="id[]" value="59"></td>
-                        <td class="tc">
-                            <input type="text" name="ord[]" value="0">
-                        </td>
-                        <td class="tc">59</td>
+                        <td class="tc"><input type="checkbox" name="id" value="{{$v->art_id}}"></td>
+                        <td class="tc">{{$v->art_id}}</td>
                         <td>
-                            <a href="#">Apple iPhone 6 Plus (A1524) 16GB 金色 移动联通电信4G手机</a>
+                            <a href="#">{{$v->art_title}}</a>
                         </td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>2014-03-15 21:11:01</td>
-                        <td></td>
+                        <td>{{$v->cate_name}}</td>
+                        <td>@if($v->art_thumb)<img src="{{$v->art_thumb}}" style="max-width: 350px;max-height: 100px;" />@endif</td>
+                        <td>{{$v->art_tag}}</td>
+                        <td class="tc"  style="cursor: pointer; " >@if($v->art_open==1)<img src="{{url('resources/image/y.png')}}">@else<img src="{{url('resources/image/x.png')}}" > @endif</td>
+                        <td class="tc"  style="cursor: pointer; " >@if($v->art_recommend==1)<img src="{{url('resources/image/y.png')}}" >@else <img src="{{url('resources/image/x.png')}}" > @endif</td>
+                        <td>{{$v->art_view}}</td>
+                        <td>{{$v->art_editor? $v->art_editor : '佚名'}}</td>
+                        <td>{{date('Y-m-d H-i-s',$v->art_time)}}</td>
                         <td>
-                            <a href="#">修改</a>
-                            <a href="#">删除</a>
+                            <a href="{{url('admin/article/'.$v->art_id.'/edit')}}">修改</a>
+                            <a href="javascript:void(0);" onclick="deleteArt({{$v->art_id}})" >删除</a>
                         </td>
                     </tr>
-                    
-                    <tr>
-                        <td class="tc"><input type="checkbox" name="id[]" value="59"></td>
-                        <td class="tc">
-                            <input type="text" name="ord[]" value="0">
-                        </td>
-                        <td class="tc">59</td>
-                        <td>
-                            <a href="#">三星 SM-G5308W 白色 移动4G手机 双卡双待</a>
-                        </td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>2014-03-15 21:11:01</td>
-                        <td></td>
-                        <td>
-                            <a href="#">修改</a>
-                            <a href="#">删除</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="tc"><input type="checkbox" name="id[]" value="59"></td>
-                        <td class="tc">
-                            <input type="text" name="ord[]" value="0">
-                        </td>
-                        <td class="tc">59</td>
-                        <td>
-                            <a href="#">荣耀 6 (H60-L11) 3GB内存增强版 白色 移动4G手机</a>
-                        </td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>2014-03-15 21:11:01</td>
-                        <td></td>
-                        <td>
-                            <a href="#">修改</a>
-                            <a href="#">删除</a>
-                        </td>
-                    </tr>
+                    @endforeach
                 </table>
 
-
-<div class="page_nav">
-<div>
-<a class="first" href="/wysls/index.php/Admin/Tag/index/p/1.html">第一页</a> 
-<a class="prev" href="/wysls/index.php/Admin/Tag/index/p/7.html">上一页</a> 
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/6.html">6</a>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/7.html">7</a>
-<span class="current">8</span>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/9.html">9</a>
-<a class="num" href="/wysls/index.php/Admin/Tag/index/p/10.html">10</a> 
-<a class="next" href="/wysls/index.php/Admin/Tag/index/p/9.html">下一页</a> 
-<a class="end" href="/wysls/index.php/Admin/Tag/index/p/11.html">最后一页</a> 
-<span class="rows">11 条记录</span>
-</div>
-</div>
+    
 
 
-
-                <div class="page_list" style="display:none;">
-                    <ul>
-                        <li class="disabled"><a href="#">&laquo;</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
+                <div class="page_list">
+                    {!! $articleList->links() !!}
                 </div>
             </div>
         </div>
     </form>
     <!--搜索结果页面 列表 结束-->
+    <style>
+        .result_content ul li {
+            padding: 6px 12px;
+        }
+    </style>
+    <script>
+        function deleteArt(art_id){
+            layer.confirm('您确定要删除吗？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(){
+                  $.post("{{url('admin/article')}}"+"/"+art_id,{'_token':'{{csrf_token()}}','_method':'delete'},function(data){
+                        if(data['status']==0){
+                            window.location.reload();
+                            layer.msg(data['msg'],{icon:6});
+                        }else{
+                            layer.msg(data['msg'],{icon:5});
+                        }
+                });
+              });
+        }
+
+        $("#delMuch").click(function(){
+            var checkboxs=new Array();
+            $('input[name="id"]:checked').each(function(){ 
+                    checkboxs.push($(this).val()); 
+            });
+            layer.confirm('您确定要删除吗？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(){
+                  $.post("{{url('admin/article/delMuch')}}",{'_token':'{{csrf_token()}}',art_ids:checkboxs},function(data){
+                        if(data['status']==0){
+                            window.location.reload();
+                        }else{
+                            layer.msg(data['msg'],{icon:5});
+                        }
+                });
+              }); 
+            
+        });
+
+    </script>
 @endsection
