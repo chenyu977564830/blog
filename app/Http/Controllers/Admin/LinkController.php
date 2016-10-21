@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
- 
+  
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -59,10 +59,10 @@ class LinkController extends CommonController
             if(isset($input['link_id'])&&$input['link_id']!=''){//更新
                 $data=Input::except('_token','link_id');
                 Link::where('link_id',$input['link_id'])->update($data);
-                $msg='修改分类成功';
+                $msg='修改链接成功';
             }else{
                 Link::create(Input::all());
-                $msg='添加分类成功';
+                $msg='添加链接成功';
             }
             return redirect('admin/link')->with('msg',$msg);
         }else{

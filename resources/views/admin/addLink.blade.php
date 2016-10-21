@@ -24,7 +24,7 @@
         </div>
     </div>
     <!--结果集标题与导航组件 结束-->
-    
+     
     <div class="result_wrap">
         <form action="{{url('admin/link')}}" method="post">
         {{csrf_field()}}
@@ -52,7 +52,7 @@
                     <tr>
                         <th><i class="require">*</i>排序：</th>
                         <td>
-                            <input type="text" class="sm" name="link_order" value="{{isset($linkEdit->link_order) ?$linkEdit->link_order : ''}}" >
+                            <input type="text" class="sm" name="link_order" value="{{isset($linkEdit->link_order) ?$linkEdit->link_order : '0'}}" >
                         </td>
                     </tr>
                     

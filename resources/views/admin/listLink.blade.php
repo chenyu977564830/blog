@@ -55,9 +55,9 @@
                         <td class="tc">
                             <input type="text" onchange="changeOrder(this,{{$link->link_id}})" value="{{$link->link_order}}">
                         </td>
-                        <td>{{$link->html}}{{$link->link_name}}</td>
+                        <td>{{$link->link_name}}</td>
                         <td>{{$link->link_title}}</td>
-                        <td>{{$link->link_url}}</td>
+                        <td><a href="{{$link->link_url}}">{{$link->link_url}}</a></td>
                         <td>
                             <a href="{{url('admin/link/'.$link->link_id.'/edit')}}">修改</a>
                             <a href="javascript:void(0);" onclick="deletelink({{$link->link_id}})" >删除</a>
