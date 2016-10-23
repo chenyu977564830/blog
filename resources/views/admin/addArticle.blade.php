@@ -59,7 +59,7 @@
                     <tr>
                         <th>发布人：</th>
                         <td>
-                            <input type="text" name="art_editor" value="@if(isset($article)) {{$article->art_editor}} @endif" >
+                            <input type="text" name="art_editor" value="@if(isset($article)){{$article->art_editor}}@endif" >
                             <span><i class="fa fa-exclamation-circle yellow"></i>15字以内</span>
                         </td>
                     </tr>
@@ -72,9 +72,9 @@
                     <tr>
                         <th>缩略图：</th>
                         <td>
-                            <label style="float:left;"><input type="hidden" class="lg" value="@if(isset($article)) {{$article->art_thumb}} @endif"  name="art_thumb"></label>
+                            <label style="float:left;"><input type="hidden" class="lg" value="@if(isset($article)){{$article->art_thumb}}@endif"  name="art_thumb"></label>
                             <label style="float:left;"><input id="file_upload" name="file_upload" type="file" multiple="true"></label>
-                            <img src="@if(isset($article)) {{$article->art_thumb}} @endif" id='art_thumb_img' style="max-width: 350px;max-height: 100px;" >
+                            <img src="@if(isset($article)){{$article->art_thumb}}@endif" id='art_thumb_img' style="max-width: 350px;max-height: 100px;" >
                         </td>
                     </tr>
                     <tr>
@@ -82,6 +82,13 @@
                         <td>
                             <label for=""><input type="radio" name="art_open" value="1" checked="checked" >是</label>
                             <label for=""><input type="radio" name="art_open" @if(isset($article) &&$article->art_open==0 ) checked="checked" @endif value="0" >否</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="require">*</i>推荐：</th>
+                        <td>
+                            <label for=""><input type="radio" name="art_recommend" value="1" checked="checked" >是</label>
+                            <label for=""><input type="radio" name="art_recommend" @if(isset($article) &&$article->art_recommend==0 ) checked="checked" @endif value="0" >否</label>
                         </td>
                     </tr>
                     <tr>
@@ -94,7 +101,7 @@
                     <tr>
                         <th>描述：</th>
                         <td>
-                            <textarea name="art_discription">@if(isset($article)) {{$article->art_discription}} @endif</textarea>
+                            <textarea name="art_description">@if(isset($article)) {{$article->art_description}} @endif</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -107,6 +114,7 @@
                         <th></th>
                         <td>
                             <input type="submit" value="提交">
+                            <input  type="hidden" name='art_id' value="@if(isset($article)) {{$article->art_id}} @endif" />
                             <input type="button" class="back" onclick="history.go(-1)" value="返回">
                         </td>
                     </tr>

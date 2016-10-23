@@ -39,7 +39,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>导航英文名:</th>
+                        <th><i class="require">*</i>导航英文名:</th>
                         <td>
                             <input type="text"  name="nav_alias" value="{{isset($navEdit->nav_alias) ?$navEdit->nav_alias : ''}}" >
                         </td>

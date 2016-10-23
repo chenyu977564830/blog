@@ -19,7 +19,15 @@ class LinkController extends CommonController
      */
     public function index()
     {
-        $links=Link::orderBy('link_order','asc')->get();
+        $links=Link::orderBy('link_order','desc')->get();
+        foreach($links as $k => $v){
+            if(mb_strlen($v['link_description'])>10){
+                $links[$k]['link_description']=mb_substr($v['link_description'], 0,10).'..';
+            }
+            if(mb_strlen($v['link_title'])>10){
+                $links[$k]['link_title']=mb_substr($v['link_title'], 0,10).'..';
+            }
+        }
         return view('admin.listLink',compact('links'));
     }
 

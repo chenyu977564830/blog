@@ -46,7 +46,10 @@
                         <th>排序</th>
                         <th>链接名称</th>
                         <th>链接标题</th>
-                        <th>链接地址</th>
+                        <th>链接说明</th>
+                        <th>后台用户名</th>
+                        <th>后台密码</th>
+                        <th>个人项目</th>
                         <th>操作</th>
                     </tr>
                     @foreach($links as $link)
@@ -55,9 +58,14 @@
                         <td class="tc">
                             <input type="text" onchange="changeOrder(this,{{$link->link_id}})" value="{{$link->link_order}}">
                         </td>
-                        <td>{{$link->link_name}}</td>
+                        <td><a href="{{$link->link_url}}">{{$link->link_name}}</a></td>
                         <td>{{$link->link_title}}</td>
-                        <td><a href="{{$link->link_url}}">{{$link->link_url}}</a></td>
+                        <td>{{$link->link_description}}</td>
+                        <td>{{$link->link_user}}</td>
+                        <td>{{$link->link_password}}</td>
+                         <td class="tc"  style="cursor: pointer; " >@if($link->link_myproject==1)<img src="{{url('resources/image/y.png')}}" >@else <img src="{{url('resources/image/x.png')}}" > @endif</td>
+
+                        
                         <td>
                             <a href="{{url('admin/link/'.$link->link_id.'/edit')}}">修改</a>
                             <a href="javascript:void(0);" onclick="deletelink({{$link->link_id}})" >删除</a>

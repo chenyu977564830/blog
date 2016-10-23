@@ -14,8 +14,8 @@
 
 
 Route::any('/', 'Home\IndexController@index');
-Route::any('art', 'Home\IndexController@article');
-Route::any('list', 'Home\IndexController@articleList');
+Route::any('art/{id}', 'Home\IndexController@article');
+Route::any('cate/{id}', 'Home\IndexController@cate');
 
 
 
@@ -37,6 +37,7 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware' => 'admin.logi
 	Route::post('conf/confUpdate', 'ConfController@confUpdate');
 	
 	Route::post('upload', 'CommonController@upload');
+	Route::post('conf/upload', 'ConfController@upload');
 	
 	Route::get('cate/{cate_id}/{keywords}', 'ArticleController@index');
 	Route::post('article/delMuch', 'ArticleController@delMuch');

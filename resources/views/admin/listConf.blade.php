@@ -47,6 +47,7 @@
                         <th>排序</th>
                         <th>配置名称</th>
                         <th>配置标题</th>
+                        <th>说明</th>
                         <th>内容</th>
                         <th>操作</th>
                     </tr>
@@ -58,6 +59,7 @@
                         </td>
                         <td>{{$conf->conf_name}}</td>
                         <td>{{$conf->conf_title}}</td>
+                        <td>{{$conf->conf_tips}}</td>
                         <td>{!!$conf->conf_content!!}</td>
                         <td>
                             <a href="{{url('admin/conf/'.$conf->conf_id.'/edit')}}">修改</a>
@@ -101,4 +103,14 @@
               });
         }
     </script>
+    
+    <style>
+        .edui-default{line-height: 28px;}
+        div.edui-combox-body,div.edui-button-body,div.edui-splitbutton-body
+        {overflow: hidden; height:20px;}
+        div.edui-box{overflow: hidden; height:22px;}
+        .uploadify{display:inline-block;}
+        .uploadify-button{border:none; border-radius:5px; margin-top:8px;}
+        table.add_tab tr td span.uploadify-button-text{color: #FFF; margin:0;}
+    </style>
 @endsection

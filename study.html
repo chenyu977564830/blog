@@ -44,3 +44,8 @@ chk_value.push($(this).val());
 }); 
 14.数据库迁移 ： php artisan make:migrate create_links_table   填充字段 然后用php artisan migrate 完成创建
 15运用seeder进行数据填充 php artisan make:seeder LinksTableSeeder 填充数据  php artisan db:seed
+
+16. 在开发过程中我遇到一种情况就是 在公司执行了composer update 然后提交到服务器 回家git pull 下来过后 项目不能运行 原因可能是 .gitignore中忽略的vendor包 导致家里面没有 在执行composer update 的时候又需要这个包 所以更新会失败 解决办法是 版本退回先composer update 后 在将git上面的项目更新到本地 
+17.在使用时orm的时候 不加条件用all 加条件后用get
+18.asset调用静态资源css js image资源 url生成路由
+19图片清除没有做 在数据入库的时候查询与数据库中图片地址是否一致 若不一致 则将原图片删除

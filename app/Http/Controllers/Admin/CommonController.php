@@ -15,7 +15,7 @@ class CommonController extends Controller
     	if($file->isValid()){
     		$realPath = $file -> getRealPath();//获取临时文件的位置
     		$entension = $file -> getClientOriginalExtension();//获取图片的格式
-    		$newName=date('YmdHis').mt_rand(100,999).'.'.$entension;
+    		$newName=md5_file($realPath).'.'.$entension;
     		$path=$file->move(base_path().'/storage/uploads',$newName);//文件存储地址
     		$filePath='/storage/uploads/'.$newName;
     		return $filePath;

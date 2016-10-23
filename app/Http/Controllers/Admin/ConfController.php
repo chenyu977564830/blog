@@ -32,8 +32,11 @@ class ConfController extends CommonController
                         $confs[$k]['conf_content'].="<input type='radio' name='field_value+{$v['conf_id']}' value='0' checked='checked' >关闭";
                     }
                     break;
-                case 'input':
-                    $confs[$k]['conf_content']="<input type='text' class='lg' name='conf_content+{$v['conf_id']}' value='{$v['conf_content']}'";
+                case 'text':
+                    $confs[$k]['conf_content']="<input type='text' style='width:300px;' name='conf_content+{$v['conf_id']}' value='{$v['conf_content']}'";
+                    break;
+                case 'file':
+                    $confs[$k]['conf_content']="<input type='text'  style='width:300px;' name='conf_content+{$v['conf_id']}' value='{$v['conf_content']}' disabled='disabled'>";
                     break;
                 case 'textarea':
                     $confs[$k]['conf_content']="<textarea name='conf_content+{$v['conf_id']}'>{$v['conf_content']}</textarea>";
@@ -62,7 +65,7 @@ class ConfController extends CommonController
      */
     public function store(Request $request)
     {
-        $input=$request->input();
+        $input=$request->input(); 
         $input['field_value']=isset($input['field_value'])? $input['field_value']:'';
         $input['conf_content']=isset($input['conf_content'])? $input['conf_content']:'';
         $rules=[
@@ -83,6 +86,10 @@ class ConfController extends CommonController
         if($validator->passes()){
             if(isset($input['conf_id'])&&$input['conf_id']!=''){//更新
                 $data=Input::except('_token','conf_id');
+                $old_image=Conf::find($input['conf_id'])->conf_content;
+                 if(is_file($old_image)&&is_file(base_path().$data['conf_content'])){//若配置内容是文件， 图片地址存在差异应删除旧图片
+                    if($data['conf_content']!=$old_image)unlink(base_path().$old_image);
+                }
                 Conf::where('conf_id',$input['conf_id'])->update($data);
                 $msg='修改配置成功';
                 $this->putFile();//更新配置项到文件夹
@@ -199,5 +206,18 @@ class ConfController extends CommonController
         file_put_contents($webConfPath, $str);
         echo Config::get('web.web_count');
 
+    }
+    //文章缩略图上传
+    public function upload()
+    {
+        $file=Input::file('Filedata');
+        if($file->isValid()){
+            $realPath = $file -> getRealPath();//获取临时文件的位置
+            $entension = $file -> getClientOriginalExtension();//获取图片的格式
+            $newName=md5_file($realPath).'.'.$entension;
+            $path=$file->move(base_path().'/resources/views/home/images/',$newName);//文件存储地址
+            $filePath='/resources/views/home/images/'.$newName;
+            return $filePath;
+        }
     }
 }

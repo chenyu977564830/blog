@@ -15,23 +15,27 @@
                     <th width="120">选择分类:</th>
                     <td>
                         <select id="cate">
-                            <option value="">全部</option>
+                            <option value="0" selected="selected" >全部</option>
                             @foreach($cates as $cate)
                             <option value="{{$cate->cate_id}}" @if($cate_id==$cate->cate_id) selected="selected" @endif >{{$cate->html}}{{$cate->cate_name}}</option>
                             @endforeach
                         </select>
                         <script>
                             $('#cate').change(function(){
-                                window.location.href="{{url('admin/cate')}}"+'/'+$(this).val()+'/null';
+                                var cate_id=$(this).val()?$(this).val():0;
+                                var keywords=$("#keywords").val()?$("#keywords").val():0;
+                                window.location.href="{{url('admin/cate')}}"+'/'+cate_id+'/'+keywords;
                             });
                         </script>
                     </td>
-                    <th width="70">关键字:</th>
-                    <td><input type="text" id="keywords" placeholder="文章标题"></td>
+                    <th width="100">文章标题搜索:</th>
+                    <td><input type="text" id="keywords"  value="" ></td>
                     <td><input type="button" id="sub" value="查询"></td>
                     <script>
                         $('#sub').click(function(){
-                            window.location.href="{{url('admin/cate')}}"+'/'+$("#cate option:selected").val()+'/'+$("#keywords").val();
+                            var cate_id=$("#cate option:selected").val()?$("#cate option:selected").val():0;
+                            var keywords=$("#keywords").val()?$("#keywords").val():0;
+                            window.location.href="{{url('admin/cate')}}"+'/'+cate_id+'/'+keywords;
                         });
                     </script>
                 </tr>
@@ -79,12 +83,12 @@
                             <a href="#">{{$v->art_title}}</a>
                         </td>
                         <td>{{$v->cate_name}}</td>
-                        <td>@if($v->art_thumb)<img src="{{$v->art_thumb}}" style="max-width: 350px;max-height: 100px;" />@endif</td>
+                        <td>@if($v->art_thumb)<img src="{{$v->art_thumb}}" style="max-width: 350px;max-height: 100px;" />@else default @endif</td>
                         <td>{{$v->art_tag}}</td>
                         <td class="tc"  style="cursor: pointer; " >@if($v->art_open==1)<img src="{{url('resources/image/y.png')}}">@else<img src="{{url('resources/image/x.png')}}" > @endif</td>
                         <td class="tc"  style="cursor: pointer; " >@if($v->art_recommend==1)<img src="{{url('resources/image/y.png')}}" >@else <img src="{{url('resources/image/x.png')}}" > @endif</td>
                         <td>{{$v->art_view}}</td>
-                        <td>{{$v->art_editor? $v->art_editor : '佚名'}}</td>
+                        <td>{{$v->art_editor ? $v->art_editor : '佚名'}}</td>
                         <td>{{date('Y-m-d H-i-s',$v->art_time)}}</td>
                         <td>
                             <a href="{{url('admin/article/'.$v->art_id.'/edit')}}">修改</a>

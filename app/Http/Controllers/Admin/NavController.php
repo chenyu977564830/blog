@@ -44,11 +44,13 @@ class NavController extends CommonController
         $input=$request->input();
         $rules=[
             'nav_url'=>'required',
+            'nav_alias'=>'required',
             'nav_name'=>'required|between:2,20',
             'nav_order'=>'required'
         ];
         $message=[
             'nav_url.required'=>'导航地址不能为空',
+            'nav_alias.required'=>'导航英文必须',
             'nav_name.required'=>'导航名称不能为空',
             'nav_name.between'=>'导航名称在2-20字之间',
             'nav_order.required'=>'排序不能为空'

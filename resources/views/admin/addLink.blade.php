@@ -55,6 +55,31 @@
                             <input type="text" class="sm" name="link_order" value="{{isset($linkEdit->link_order) ?$linkEdit->link_order : '0'}}" >
                         </td>
                     </tr>
+                     <tr>
+                        <th>后台用户名：</th>
+                        <td>
+                            <input type="text" class="sm" name="link_user" value="{{isset($linkEdit->link_user) ?$linkEdit->link_user : ''}}" >
+                        </td>
+                    </tr>
+                     <tr>
+                        <th>后台密码：</th>
+                        <td>
+                            <input type="text" class="sm" name="link_password" value="{{isset($linkEdit->link_password) ?$linkEdit->link_password : ''}}" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>排序：</th>
+                        <td>
+                            <input type="radio" name="link_myproject"  value="0" checked="checked">普通链接&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="link_myproject"  value="1" @if(isset($linkEdit)&&$linkEdit->link_myproject==1) checked='checked' @endif >自己项目链接
+                        </td>
+                    </tr>
+                     <tr>
+                        <th>项目说明：</th>
+                        <td>
+                           <textarea name="link_description">{{isset($linkEdit->link_description) ? $linkEdit->link_description : ''}}</textarea>
+                        </td>
+                    </tr>
                     
                     <tr>
                         <th></th>

@@ -25,7 +25,7 @@ class ArticleController extends CommonController
         $cates=Category::orderBy('cate_order','asc')->get();
         $cates=\unlimitedLevel::unlimitedForLevel($cates);
         if($cate_id || $keywords ){//如果分类id存在或者关键词存在就会进行搜索
-            if($cate_id&&$keywords!="null"){
+            if($cate_id&&$keywords){
                 $articleList = DB::table('article')
                 ->join('category', 'article.cate_id', '=', 'category.cate_id')
                 ->where('article.cate_id',$cate_id)->where('art_title','like','%'.$keywords.'%')
@@ -49,6 +49,7 @@ class ArticleController extends CommonController
             $articleList = DB::table('article')
                 ->join('category', 'article.cate_id', '=', 'category.cate_id')
                 ->select('article.*', 'category.cate_name')
+                ->orderBy('article.art_time','desc')
                 ->paginate(5);
         }
         return view('admin.listArticle',compact('articleList','cates','cate_id'));
@@ -76,13 +77,14 @@ class ArticleController extends CommonController
     public function store(Request $request)
     {
         $input=$request->input();
-        $input['art_time']=time();//文章添加/修改时间
+        $input['art_time']=time();//文章添加
         $rules=[
             'cate_id'=>'required',
             'art_content'=>'required',
-            'art_title'=>'required|between:5,20',
+            'art_title'=>'required|between:5,100',
             'art_time'=>'required',
             'art_open'=>'required',
+            'art_recommend'=>'required',
             'art_description'=>'between:50,100'
         ];
         $message=[
@@ -90,8 +92,9 @@ class ArticleController extends CommonController
             'art_content.required'=>'文章内容不能为空',
             'art_time.required'=>'文章添加时间不能为空',
             'art_open.required'=>'请确认是否开放',
+            'art_recommend.required'=>'请确认是否推荐',
             'art_title.required'=>'文章标题不能为空',
-            'art_title.between'=>'文章标题在5-20字之间',
+            'art_title.between'=>'文章标题在5-100字之间',
             'art_description.between'=>'文章描述在50-100字之间'
         ];
 
@@ -99,10 +102,16 @@ class ArticleController extends CommonController
         if($validator->passes()){
             if(isset($input['art_id'])&&$input['art_id']!=''){//更新
                 $data=Input::except('_token','art_id');
+                $data['art_time']=time();//修改时间
+                if($data['art_thumb']){//若图片地址存在差异应删除旧图片
+                    $old_art_thumb=Article::find($input['art_id'])->art_thumb;
+                    if($data['art_thumb']!=$old_art_thumb)unlink(base_path().$old_art_thumb);
+                }
                 Article::where('art_id',$input['art_id'])->update($data);
                 $msg='修改文章成功';
             }else{
-                Article::create(Input::all());
+                Article::create($input);
+                $input['art_editor']=trim($input['art_editor'],'') ? $input['art_editor'] :'佚名'; 
                 $msg='添加文章成功';
             }
             return back()->with('msg',$msg);

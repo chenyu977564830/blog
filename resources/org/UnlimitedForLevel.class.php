@@ -33,9 +33,9 @@ Class unlimitedLevel{
     Static public function getParents($cate,$id){
         $arr=array();
         foreach($cate as $v){
-            if($v['id']==$id){
+            if($v['cate_id']==$id){
                 $arr[]=$v;
-                $arr=array_merge(self::getParents($cate,$v['pid']),$arr);
+                $arr=array_merge(self::getParents($cate,$v['cate_pid']),$arr);
             }
         }
         return $arr;
