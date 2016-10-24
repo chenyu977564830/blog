@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Model\Category;
+use App\Http\Model\Article;
 require_once('resources/org/UnlimitedForLevel.class.php');
 class CategoryController extends CommonController
 {
@@ -120,10 +121,11 @@ class CategoryController extends CommonController
     {
         
         $cateChild=Category::where('cate_pid',$id)->get();
-        if(count($cateChild)>0){
+        $cateAtricle=Article::where('cate_id',$id)->get();
+        if(count($cateChild)>0 || count($cateAtricle)>0){
             $data=[
                 'status'=>1,
-                'msg'=>'存在子分类，删除失败'
+                'msg'=>'存在文章或子分类，不允许删除'
             ];
         }else{
             $cate=Category::find($id);

@@ -42,6 +42,12 @@ class IndexController extends CommonController
         $art_next=Article::where('art_time','>',$article_detal->art_time)->where('art_open','1')->orderBy('art_time','asc')->first();
         //6篇相关文章
         $art_releatives=Article::where('cate_id',$article_detal->cate_id)->where('art_open','1')->orderBy('art_time','desc')->limit(6)->get();
+
+
+        //更新文章浏览次数
+        $addView=Article::find($id);
+        $addView->art_view+=1;
+        $addView->save();        
     	return view('home.new',compact('article_detal','art_releatives','art_pre','art_next','cates'));
     }
     public function cate($id)
@@ -67,7 +73,12 @@ class IndexController extends CommonController
                 ->orderBy('article.art_time','desc')
                 ->paginate($page_size);
         //广告图片
-        $ad_image=Config::get('web.ad_image');       
+        $ad_image=Config::get('web.ad_image');
+
+        //更新分类浏览次数
+        $addView=Category::find($id);
+        $addView->cate_view+=1;
+        $addView->save();         
     	return view('home.list',compact('cate_childs','cate_detal','articleList','ad_image'));
     }
 
